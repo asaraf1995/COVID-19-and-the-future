@@ -1,0 +1,9 @@
+Done tasks:
+
+1. Set up a meeting with client to ask about data.
+2. Get the data and explore it.
+
+Tasks to do:
+
+1. Discuss about the important attributes.
+2. Select one attribute and create a high fidelity design for client approval.
