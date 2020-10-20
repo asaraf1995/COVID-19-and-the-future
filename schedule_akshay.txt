@@ -1,0 +1,11 @@
+Done tasks:
+
+1. Set up a meeting with client to clarify the attributes in the data.
+2. Data exploration.
+3. Visual design exploration.
+
+Tasks to do:
+
+1. Discuss the most important feature and create a high fidility design using adobe xd for the client's approval.
+2. Explore various geo representations and timeline representations for the design.
+3. Make a final set of variables to be used in the project.
