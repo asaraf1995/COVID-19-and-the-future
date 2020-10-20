@@ -1,0 +1,11 @@
+Done tasks:
+
+1. Set up a meeting with client to clarify the attributes in the data.
+2. Visual design exploration
+
+Todo tasks:
+
+1. Meet with the client and decide the attributes of interest. 
+2. Create an initial Visualisation that would give an 
+insight of the attributes that interests the client most.
+
