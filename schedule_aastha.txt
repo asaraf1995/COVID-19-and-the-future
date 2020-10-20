@@ -6,6 +6,8 @@ Done tasks:
 Todo tasks:
 
 1. Meet with the client and decide the attributes of interest. 
-2. Create an initial Visualisation that would give an 
+2. Data Analysis and feature selection.
+3. Create an initial Visualisation that would give an 
 insight of the attributes that interests the client most.
+
 
