@@ -26,7 +26,7 @@ $('#btn').click(function(){
 			monthHtml="";
 			if(monthData.length>0){
 				if(category=='all'){
-					if(monthData[0][empVar]>0){
+					if(monthData[0][empVar]<0){
 						monthHtml="Employment increased "+monthData[0][empVar]+"%.</br> Productivity increased "+monthData[0][prod_i_Var]+"%.</br> Productivity decreased "+monthData[0][prod_d_Var]+"%."
 					}
 					else{
@@ -42,11 +42,12 @@ $('#btn').click(function(){
 						monthHtml=("Employment decreased "+monthData[0][empVar]+"%.")
 					}
 				}
+
 				if(i%2==0){
 				$("#timeline_1").append(`
 					<div class="row align-items-center lines">
 					  <div class="col-2 text-center bottom">
-						<div class="circle">`+month[i-1]+`</div>
+						<div class="circle"><p>`+month[i-1]+`</p></div>
 					  </div>
 					  <div class="col-9">
 						<p>`+monthHtml+`</p>
@@ -72,7 +73,7 @@ $('#btn').click(function(){
 						<p>`+monthHtml+`</p>
 					  </div>
 					  <div class="col-2 text-center full">
-						<div class="circle">`+month[i-1]+`</div>
+						<div class="circle"><p>`+month[i-1]+`</p></div>
 					  </div>
 					</div>
 					<div class="row timeline">
