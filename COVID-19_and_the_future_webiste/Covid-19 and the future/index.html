@@ -18,6 +18,11 @@
 	<script src="https://d3js.org/colorbrewer.v1.min.js"></script>
     <script src="https://d3js.org/d3-scale.v3.min.js"></script>
     <script src="https://d3js.org/d3.v3.min.js"></script>
+    <link rel="stylesheet" href="comparison.css">
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+    <script>
+        d3version4 = d3
+    </script>
 
 </head>
 <body>
@@ -54,21 +59,53 @@
         </table>
     </div>
     <div id="comparison_container" class="container">
-        <div onclick="closecomparison()"><i class="fas fa-angle-right"></i></div>
-        <h1>Comparison between 2 states</h1>
-        <section>
-            <h2>Comparison between 2 states</h2>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <div id="used">
-                <div><i class="fas fa-circle"></i>&nbsp;HTML5</div>
-                <div><i class="fas fa-circle"></i>&nbsp;CSS3</div>
-                <div><i class="fas fa-circle"></i>&nbsp;Javascript</div>
+        <div class="div-inline" onclick="closecomparison()"><i class="fas fa-angle-right"></i></div>
+        <h3 class="div-inline" onclick="closecomparison()">Comparison between 2 states</h3>
+
+        <div id="chart" style="position: absolute; margin-left: 100px; margin-top: 50px;">
+        </div>
+
+        <div style="position: relative; float: right; width: 550px;">
+            <div>
+                <h3>INSTRUCTIONS</h3>
+                <ul style="font-size: 15px;">
+                    <li>Click on each slice of the sunburst graph, to view detailed results.</li>
+                    <li>To revert back to full graph, either click on the center of the graph (number of slices clicked) or click right outside the edge of the graph.</li>
+                    <li>Hover over each slide to bring up the tooltip about that slice which contains the name and size of that slice (useful for slices without labels).</li>
+                </ul>
             </div>
-            <button class="btn_one">button 1</button>
-            <button class="btn_two">button 2</button>
-        </section>
+            <hr>
+            <p>Use the options below to compare two states along with other filters.</p>
+            <div style="font-size: 18px; margin-left: 200px;">
+                <label>Filter: </label>
+                <SELECT class="combine" id ="filter">
+                    <option>Productivity</option>
+                    <option>Employment</option>
+                </SELECT><br><br>
+                <label>Gender: </label>
+                <SELECT class="combine" id ="gender">
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>All</option>
+                </SELECT><br><br>
+                <label>State 1: </label>
+                <SELECT class="combine" id ="state1">
+                    <option>Alabama</option>
+                    <option>Alaska</option>
+                    <option>Arizona</option>
+                    <option>California</option>
+                </SELECT><br><br>
+                <label>State 2: </label>
+                <SELECT class="combine" id ="state2">
+                    <option>Alabama</option>
+                    <option>Alaska</option>
+                    <option>Arizona</option>
+                    <option>California</option>
+                </SELECT><br><br>
+                <input type="hidden" id="combinedStates"/>
+                <button class="btn_one" onclick="drawGraph(combinedStates.value)">Compare</button>
+            </div>
+        </div>
     </div>
     <div id="timeline_container" class="container">
 		<div onclick="closetimeline()"><i class="fas fa-angle-left"></i></div>
@@ -145,10 +182,11 @@
             <div onclick="closeInterestingfacts()"><i class="fas fa-angle-down"></i></div>
             <h3>Did you know how the employment has changed so far due to COVID-19 ?</h3>
             <section >
-                <div id="vis_1"></div>
-                <button class="btn_one" id="btn_male">Male</button>
-                <button class="btn_one" id="btn_female">Female</button> 
-                <button class="btn_one" id="btn_all">All</button>    
+                
+                <button class="btn_one" id="btn_male" onclick="changeGender('Men')">Male</button>
+                <button class="btn_one" id="btn_female" onclick="changeGender('Women')">Female</button> 
+                <button class="btn_one" id="btn_all" onclick="changeGender('All')">All</button> 
+                <div id="vis_1"></div>   
             </section>
         </div>
         
@@ -158,5 +196,6 @@
     <script src="app.js"></script>
     <script src="timeline.js"></script>
     <script src="vis.js"></script>
+    <script src="comparison.js"></script>
 </body>
 </html>

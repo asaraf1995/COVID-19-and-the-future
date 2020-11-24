@@ -1,3 +1,35 @@
+function changeGender(str){
+  d3.select( '#vis_1' ).selectAll('*').remove();
+if (str == 'Men'){
+  function parseRow ( d ) {
+    stateDataMap[d._id] = +d.Employment_increase_men;
+    maxData = Math.max(Math.abs(+d.Employment_increase_men), maxData);
+    return { 'state': d._id,
+           'code': d._id,
+           'employment_increase': +d.Employment_increase_men,
+ };
+}}
+else if (str == 'Women'){
+  function parseRow ( d ) {
+    stateDataMap[d._id] = +d.Employment_increase_women;
+    maxData = Math.max(Math.abs(+d.Employment_increase_women), maxData);
+    return { 'state': d._id,
+           'code': d._id,
+           'employment_increase': +d.Employment_increase_women,
+ };
+}
+}
+else {
+  function parseRow ( d ) {
+    stateDataMap[d._id] = +d.Employment_increase;
+    maxData = Math.max(Math.abs(+d.Employment_increase), maxData);
+    return { 'state': d._id,
+           'code': d._id,
+           'employment_increase': +d.Employment_increase,
+ };
+}
+}
+
 
 var gridmap = {};
 var stateDataMap = {};
@@ -10,14 +42,14 @@ d3.csv( 'map.csv',
       d3.csv( 'employment.csv', parseRow, ready );
     });
 
-function parseRow ( d ) {
-    stateDataMap[d._id] = +d.Employment_increase;
-    maxData = Math.max(Math.abs(+d.Employment_increase), maxData);
-    return { 'state': d._id,
-           'code': d._id,
-           'employment_increase': +d.Employment_increase,
- };
-}
+// function parseRow ( d ) {
+//     stateDataMap[d._id] = +d.Employment_increase;
+//     maxData = Math.max(Math.abs(+d.Employment_increase), maxData);
+//     return { 'state': d._id,
+//            'code': d._id,
+//            'employment_increase': +d.Employment_increase,
+//  };
+// }
 
 function ready ( data ) {
 
@@ -25,8 +57,8 @@ function ready ( data ) {
 
   var margin = { top: 10, right: 10, bottom: 10, left: 10 },
       html = document.documentElement,
-      width = html.clientWidth*0.5 - margin.left - margin.right,
-      height = html.clientHeight*0.5 - margin.top - margin.bottom,
+      width = html.clientWidth*0.7 - margin.left - margin.right,
+      height = html.clientHeight*0.7 - margin.top - margin.bottom,
 
       ry = d3.scale.ordinal()
           .domain( gridmap.values().map( d => d.y ).sort( d3.ascending ) )
@@ -39,7 +71,7 @@ function ready ( data ) {
           .domain([ 0, d3.max( data, d => d.employment_increase ) ])
           .range([ ry.rangeBand(), 0 ])
       x = d3.scale.linear()
-          .domain( ['All'] )
+          .domain( [0, d3.max( data, d => d.employment_increase )] )
           .range([ 0, rx.rangeBand() ]);
 
   var countries = d3.nest()
@@ -78,7 +110,6 @@ function ready ( data ) {
   country.append( 'rect' )
       .attr( 'width', rx.rangeBand() )
       .attr( 'height', function(d) {
-          console.log(stateDataMap);
           var val = Math.abs(stateDataMap[d.key])
           return ry.rangeBand() * (1 - val/maxData);
         }
@@ -94,8 +125,8 @@ function ready ( data ) {
       .attr( 'dy', '1em' )
       .style( 'fill', 'rgba(0,0,0,.75)' )
       .text( d => (d.title || d.key) + ' (' + stateDataMap[d.key] + ' % )');
-      svg.append("circle").attr("cx",600).attr("cy",330).attr("r", 8).style("fill", "#91cf60")
-      svg.append("circle").attr("cx",600).attr("cy",360).attr("r", 8).style("fill", "#fc8d59")
-      svg.append("text").attr("x", 620).attr("y", 335).text("Increase").style("font-size", "12px").style("fill", "#d8d8d8")
-      svg.append("text").attr("x", 620).attr("y", 365).text("Decrease").style("font-size", "12px").style("fill", "#d8d8d8")
-}
+      svg.append("circle").attr("cx",800).attr("cy",430).attr("r", 8).style("fill", "#91cf60")
+      svg.append("circle").attr("cx",800).attr("cy",460).attr("r", 8).style("fill", "#fc8d59")
+      svg.append("text").attr("x", 820).attr("y", 435).text("Increase").style("font-size", "12px").style("fill", "#d8d8d8")
+      svg.append("text").attr("x", 820).attr("y", 465).text("Decrease").style("font-size", "12px").style("fill", "#d8d8d8")
+}}
