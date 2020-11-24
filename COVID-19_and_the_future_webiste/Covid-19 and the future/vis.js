@@ -42,14 +42,14 @@ d3.csv( 'map.csv',
       d3.csv( 'employment.csv', parseRow, ready );
     });
 
-function parseRow ( d ) {
-    stateDataMap[d._id] = +d.Employment_increase;
-    maxData = Math.max(Math.abs(+d.Employment_increase), maxData);
-    return { 'state': d._id,
-           'code': d._id,
-           'employment_increase': +d.Employment_increase,
- };
-}
+// function parseRow ( d ) {
+//     stateDataMap[d._id] = +d.Employment_increase;
+//     maxData = Math.max(Math.abs(+d.Employment_increase), maxData);
+//     return { 'state': d._id,
+//            'code': d._id,
+//            'employment_increase': +d.Employment_increase,
+//  };
+// }
 
 function ready ( data ) {
 
