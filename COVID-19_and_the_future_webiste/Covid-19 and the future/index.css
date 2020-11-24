@@ -137,7 +137,7 @@ body {
     border-radius:100px 100px 0px 0px;
 }
 svg {
-    font: 9px sans-serif;
+    font: 11px sans-serif;
   }
 #timeline:hover {
     background:rgba(255,50,50,0.9);

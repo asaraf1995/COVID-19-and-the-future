@@ -25,8 +25,8 @@ function ready ( data ) {
 
   var margin = { top: 10, right: 10, bottom: 10, left: 10 },
       html = document.documentElement,
-      width = html.clientWidth*0.5 - margin.left - margin.right,
-      height = html.clientHeight*0.5 - margin.top - margin.bottom,
+      width = html.clientWidth*0.7 - margin.left - margin.right,
+      height = html.clientHeight*0.7 - margin.top - margin.bottom,
 
       ry = d3.scale.ordinal()
           .domain( gridmap.values().map( d => d.y ).sort( d3.ascending ) )
@@ -94,8 +94,8 @@ function ready ( data ) {
       .attr( 'dy', '1em' )
       .style( 'fill', 'rgba(0,0,0,.75)' )
       .text( d => (d.title || d.key) + ' (' + stateDataMap[d.key] + ' % )');
-      svg.append("circle").attr("cx",600).attr("cy",330).attr("r", 8).style("fill", "#91cf60")
-      svg.append("circle").attr("cx",600).attr("cy",360).attr("r", 8).style("fill", "#fc8d59")
-      svg.append("text").attr("x", 620).attr("y", 335).text("Increase").style("font-size", "12px").style("fill", "#d8d8d8")
-      svg.append("text").attr("x", 620).attr("y", 365).text("Decrease").style("font-size", "12px").style("fill", "#d8d8d8")
+      svg.append("circle").attr("cx",800).attr("cy",430).attr("r", 8).style("fill", "#91cf60")
+      svg.append("circle").attr("cx",800).attr("cy",460).attr("r", 8).style("fill", "#fc8d59")
+      svg.append("text").attr("x", 820).attr("y", 435).text("Increase").style("font-size", "12px").style("fill", "#d8d8d8")
+      svg.append("text").attr("x", 820).attr("y", 465).text("Decrease").style("font-size", "12px").style("fill", "#d8d8d8")
 }
