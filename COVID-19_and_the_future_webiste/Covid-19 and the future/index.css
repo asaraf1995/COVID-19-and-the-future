@@ -171,7 +171,8 @@ body {
     width:90vw;
     height:90vh;
     padding:5vh 5vw;
-    background:rgb(255, 50, 50);
+    background:black;
+	opacity:0.9;
     color:#fff;
     z-index:9;
     position:fixed;
@@ -358,4 +359,61 @@ body {
     #box div {
         width:100%;
     }
+}
+
+.circle {
+	font-weight: 500;
+	font-size:18px !important;
+    border-radius: 100%;
+    background-color: rgb(255, 50, 50);
+    width:50px;
+	height:32px;
+}
+
+.timeline div {
+	padding: 0;
+	height: 40px;
+}
+
+.timeline hr {
+	border-top: 3px solid rgb(255, 50, 50);
+	margin: 0;
+	top: 17px;
+	position: relative;
+}
+
+.timeline .col-2 {
+	display: flex;
+	overflow: hidden;
+}
+
+.timeline .corner {
+	border: 3px solid rgb(255, 50, 50);
+	width: 100%;
+	position: relative;
+	border-radius: 15px;
+}
+
+.timeline .top-right {
+	left: 50%;
+	top: -51%;
+}
+
+.timeline .left-bottom {
+	left: -50%;
+	top: calc(50% - 3px);
+}
+
+.timeline .top-left {
+	left: -50%;
+	top: -51%;
+}
+
+.timeline .right-bottom {
+	left: 50%;
+	top: calc(50% - 3px);
+}
+
+.timeline div{
+	margin:0;
 }
