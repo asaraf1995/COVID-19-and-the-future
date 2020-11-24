@@ -23,7 +23,7 @@ $('#btn').click(function(){
 			monthData=csv.filter(function(row) {
 				return row['_id.a'] == i;
 			});
-			monthHtml="";
+			monthHtml="Nothing important happened!";
 			if(monthData.length>0){
 				if(category=='all'){
 					if(monthData[0][empVar]<0){
@@ -42,8 +42,9 @@ $('#btn').click(function(){
 						monthHtml=("Employment decreased "+monthData[0][empVar]+"%.")
 					}
 				}
-
-				if(i%2==0){
+			}
+			
+			if(i%2==0 && i > 3){
 				$("#timeline_1").append(`
 					<div class="row align-items-center lines">
 					  <div class="col-2 text-center bottom">
@@ -65,7 +66,7 @@ $('#btn').click(function(){
 					  </div>
 					</div>`);					
 				}
-				else{
+				else if (i>3){
 						
 				$("#timeline_1").append(`
 					<div class="row align-items-center justify-content-end lines">
@@ -88,7 +89,6 @@ $('#btn').click(function(){
 					  </div>
 					</div>`);
 				}
-			}
 		}
 	});
 });
