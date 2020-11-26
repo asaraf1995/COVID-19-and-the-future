@@ -1,6 +1,6 @@
 var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
-$('#btn').click(function(){
-	$("#timeline_1").html("")
+function createTimeline(){
+	$("#timeline").html("")
 	category=$("#category").val()
 	gender=$("#gender").val()
 	empVar="employment"
@@ -44,14 +44,14 @@ $('#btn').click(function(){
 				}
 			}
 			
-			if(i%2==0 && i > 3){
-				$("#timeline_1").append(`
+			if(i%2==0 && i > 3 && i <11){
+				$("#timeline").append(`
 					<div class="row align-items-center lines">
 					  <div class="col-2 text-center bottom">
 						<div class="circle"><p>`+month[i-1]+`</p></div>
 					  </div>
 					  <div class="col-9">
-						<p>`+monthHtml+`</p>
+						<div id="chart`+i+`"></div>
 					  </div>
 					</div>
 					<div class="row timeline">
@@ -66,12 +66,12 @@ $('#btn').click(function(){
 					  </div>
 					</div>`);					
 				}
-				else if (i>3){
+				else if (i > 3 && i < 11){
 						
-				$("#timeline_1").append(`
+				$("#timeline").append(`
 					<div class="row align-items-center justify-content-end lines">
 					  <div class="col-9 text-right">
-						<p>`+monthHtml+`</p>
+						<div id="chart`+i+`"></div>
 					  </div>
 					  <div class="col-2 text-center full">
 						<div class="circle"><p>`+month[i-1]+`</p></div>
@@ -89,8 +89,9 @@ $('#btn').click(function(){
 					  </div>
 					</div>`);
 				}
+								
 		}
 	});
-});
+};
 
 
