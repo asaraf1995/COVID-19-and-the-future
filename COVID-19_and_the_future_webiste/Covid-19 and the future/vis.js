@@ -1,3 +1,4 @@
+mapEle=[]
 function createMap(category, gender){
 	d3.select( '#vis_1' ).selectAll('*').remove();
 	for(var i=0;i<categoryVariableName.length;i++){
@@ -81,11 +82,40 @@ function createMap(category, gender){
 		var country = svg.selectAll( 'g' ).data( countries ).enter()
 			.append( 'g' )
 			.attr( 'transform', d => `translate(${[ rx( d.x ), ry( d.y ) ]})` )
+			.on('click', function(d, i) {
+				$(this).find("rect").first().attr("stroke","#21abcf")
+				$(this).find("rect").first().attr("stroke-width","4")
+				$(this).find("rect").first().attr("class","perimeter")
+				
+				if(stateVars[0]==""){
+					stateVars[0]=d['key']
+					mapEle[0]=this;
+				}
+				else if(stateVars[1]==""){
+					stateVars[1]=stateVars[0]
+					stateVars[0]=d['key']
+
+					mapEle[1]=mapEle[0];
+					mapEle[0]=this;
+				}
+				else{
+					if(d['key']!=stateVars[1] && stateVars[0]!=stateVars[1]){
+						$(mapEle[1]).find("rect").first().attr("stroke","none")
+						$(mapEle[1]).find("rect").first().attr("stroke-width","0")
+						$(mapEle[1]).find("rect").first().attr("class","")
+					}
+					stateVars[1]=stateVars[0];
+					stateVars[0]=d['key']
+					
+					mapEle[1]=mapEle[0];
+					mapEle[0]=this;
+				}
+				createTimeline(stateVars[0],stateVars[1],$("#gender").val(),$("#category").val(),0);
+			});
 
 		country.append( 'rect' )
 			.attr( 'width', rx.rangeBand() )
 			.attr( 'height', ry.rangeBand() )
-			.style( 'stroke', 'none' )
 			.style( 'fill', function(d) {
 			  if (stateDataMap[d.key] > 0){
 				  return '#91cf60'
@@ -101,7 +131,8 @@ function createMap(category, gender){
 				}
 			)
 			.style( 'stroke', 'none' )
-			.style( 'fill', '#d8d8d8' );
+			.style( 'fill', '#d8d8d8' )
+			
 
 		country.append( 'text' )
 			.attr( 'class', 'country' )
@@ -111,10 +142,10 @@ function createMap(category, gender){
 			.attr( 'dy', '1em' )
 			.style( 'fill', 'rgba(0,0,0,.75)' )
 			.text( d => (d.title || d.key) + ' (' + stateDataMap[d.key] + ' % )');
-			svg.append("circle").attr("cx",800).attr("cy",430).attr("r", 8).style("fill", "#91cf60")
-			svg.append("circle").attr("cx",800).attr("cy",460).attr("r", 8).style("fill", "#fc8d59")
-			svg.append("text").attr("x", 820).attr("y", 435).text("Increase").style("font-size", "12px").style("fill", "#d8d8d8")
-			svg.append("text").attr("x", 820).attr("y", 465).text("Decrease").style("font-size", "12px").style("fill", "#d8d8d8")
+			svg.append("circle").attr("cx",$("#Interestingfacts_container").width()*0.86).attr("cy",$("#Interestingfacts_container").height()*0.8).attr("r", 8).style("fill", "#91cf60")
+			svg.append("circle").attr("cx",$("#Interestingfacts_container").width()*0.86).attr("cy",$("#Interestingfacts_container").height()*0.84).attr("r", 8).style("fill", "#fc8d59")
+			svg.append("text").attr("x", $("#Interestingfacts_container").width()*0.87).attr("y", $("#Interestingfacts_container").height()*0.81).text("Increase").style("font-size", "12px").style("fill", "#fff")
+			svg.append("text").attr("x", $("#Interestingfacts_container").width()*0.87).attr("y", $("#Interestingfacts_container").height()*0.85).text("Decrease").style("font-size", "12px").style("fill", "#fff")
 	}
 }
 createMap("productivity","none");

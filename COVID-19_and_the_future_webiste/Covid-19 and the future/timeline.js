@@ -60,14 +60,17 @@ states={
     "WI": "Wisconsin",
     "WY": "Wyoming"
 }
-var categories= ["Productivity","Employment"]
-var categoryVariableName=["prod","employment","total_population"]
+var categories= ["Productivity","Employment"];
+var categoryVariableName=["prod","employment","total_population"];
+var stateVars=["",""];
+
 function isZero(a){
 	if(a==0){
 		return 2;
 	}
 	return a;
 }
+
 function createTimeline(s1,s2,category,gender,overall){
 	$("#timeline").html("")
 	
@@ -103,53 +106,7 @@ function createTimeline(s1,s2,category,gender,overall){
 						colorData.push({"column":categories[1],"data":monthData[0][categoryVariableName[1]]});
 					}
 				}
-				if(i%2==0 && i > 3 && i <11){
-					$("#timeline").append(`
-					<div class="row align-items-center lines">
-					  <div class="col-2 text-center bottom">
-						<div class="circle"><p>`+month[i-1]+`</p></div>
-					  </div>
-					  <div class="col-8">
-						<svg id="chart`+i+`" class='chartt'></svg>
-					  </div>
-					</div>
-					<div class="row timeline">
-					  <div class="col-2">
-						<div class="corner top-right"></div>
-					  </div>
-					  <div class="col-8">
-						<hr/>
-					  </div>
-					  <div class="col-2">
-						<div class="corner left-bottom"></div>
-					  </div>
-					</div>`);	
-					chart(plotData,colorData,i,1,s1,s2);
-				}
-				else if (i > 3 && i < 11){
-							
-					$("#timeline").append(`
-					<div class="row align-items-center justify-content-end lines">
-					  <div class="col-8 text-right">
-						<svg id="chart`+i+`" class='chartt'></svg>
-					  </div>
-					  <div class="col-2 text-center full">
-						<div class="circle"><p>`+month[i-1]+`</p></div>
-					  </div>
-					</div>
-					<div class="row timeline">
-					  <div class="col-2">
-						<div class="corner right-bottom"></div>
-					  </div>
-					  <div class="col-8">
-						<hr/>
-					  </div>
-					  <div class="col-2">
-						<div class="corner top-left"></div>
-					  </div>
-					</div>`);
-					chart(plotData,colorData,i,1,s1,s2);
-				}
+				drawTimeline(plotData,colorData,i,s1,s2);
 			}
 		});
 	}
@@ -172,86 +129,98 @@ function createTimeline(s1,s2,category,gender,overall){
 				monthData2=csv2.filter(function(row) {
 					return row['_id.month'] == i;
 				});
-				if(monthData1.length>0 && monthData2.length==0){
-					if(category=='all'){
-						for(var x=0;x<categories.length;x++){
-							plotData.push({"column":categories[x],"data":isZero(Math.abs(monthData1[0][categoryVariableName[x]]))});
-							colorData.push({"column":categories[x],"data":monthData1[0][categoryVariableName[x]]});
-						}
-					}else if (category=='productivity'){
-						plotData.push({"column":categories[0],"data":isZero(Math.abs(monthData1[0][categoryVariableName[0]]))});
-						colorData.push({"column":categories[0],"data":monthData1[0][categoryVariableName[0]]});
-					}else{
-						plotData.push({"column":categories[1],"data":isZero(Math.abs(monthData1[0][categoryVariableName[1]]))});
-						colorData.push({"column":categories[1],"data":monthData1[0][categoryVariableName[1]]});
+				if(category=='all'){
+					for(var x=0;x<categories.length;x++){
+						plotData.push({"column":categories[x],"data":(monthData1.length>0?isZero(Math.abs(monthData1[0][categoryVariableName[x]])):0),"data1":(monthData2.length>0?(-(isZero(Math.abs(monthData2[0][categoryVariableName[x]])))):0)});
+						colorData.push({"column":categories[x],"data":(monthData1.length>0?monthData1[0][categoryVariableName[x]]:0),"data1":(monthData2.length>0?monthData2[0][categoryVariableName[x]]:0)});
 					}
+				}else if (category=='productivity'){
+					plotData.push({"column":categories[0],"data":(monthData1.length>0?isZero(Math.abs(monthData1[0][categoryVariableName[0]])):0),"data1":(monthData2.length>0?(-(isZero(Math.abs(monthData2[0][categoryVariableName[0]])))):0)});
+					colorData.push({"column":categories[0],"data":(monthData1.length>0?monthData1[0][categoryVariableName[0]]:0),"data1":(monthData2.length>0?monthData2[0][categoryVariableName[0]]:0)});
+				}else{
+					plotData.push({"column":categories[1],"data":(monthData1.length>0?isZero(Math.abs(monthData1[0][categoryVariableName[1]])):0),"data1":(monthData2.length>0?(-(isZero(Math.abs(monthData2[0][categoryVariableName[1]])))):0)});
+					colorData.push({"column":categories[1],"data":(monthData1.length>0?monthData1[0][categoryVariableName[1]]:0),"data1":(monthData2.length>0?monthData2[0][categoryVariableName[1]]:0)});
 				}
-				else if(monthData1.length>0 && monthData2.length>0){
-					if(category=='all'){
-						for(var x=0;x<categories.length;x++){
-							plotData.push({"column":categories[x],"data":isZero(Math.abs(monthData1[0][categoryVariableName[x]])),"data1":-(isZero(Math.abs(monthData2[0][categoryVariableName[x]])))});
-							colorData.push({"column":categories[x],"data":monthData1[0][categoryVariableName[x]],"data1":monthData2[0][categoryVariableName[x]]});
-						}
-					}else if (category=='productivity'){
-						plotData.push({"column":categories[0],"data":isZero(Math.abs(monthData1[0][categoryVariableName[0]])),"data1":-(isZero(Math.abs(monthData2[0][categoryVariableName[0]])))});
-						colorData.push({"column":categories[0],"data":monthData1[0][categoryVariableName[0]],"data1":monthData2[0][categoryVariableName[0]]});
-					}else{
-						plotData.push({"column":categories[1],"data":isZero(Math.abs(monthData1[0][categoryVariableName[1]])),"data1":-(isZero(Math.abs(monthData2[0][categoryVariableName[1]])))});
-						colorData.push({"column":categories[1],"data":monthData1[0][categoryVariableName[1]],"data1":monthData2[0][categoryVariableName[1]]});
-					}
-				}
-				if(i%2==0 && i > 3 && i <11){
-					$("#timeline").append(`
-					<div class="row align-items-center lines">
-					  <div class="col-2 text-center bottom">
-						<div class="circle"><p>`+month[i-1]+`</p></div>
-					  </div>
-					  <div class="col-8">
-						<svg id="chart`+i+`" class='chartt'></svg>
-					  </div>
-					</div>
-					<div class="row timeline">
-					  <div class="col-2">
-						<div class="corner top-right"></div>
-					  </div>
-					  <div class="col-8">
-						<hr/>
-					  </div>
-					  <div class="col-2">
-						<div class="corner left-bottom"></div>
-					  </div>
-					</div>`);	
-					chart(plotData,colorData,i,1,s1,s2);
-				}
-				else if (i > 3 && i < 11){
-							
-					$("#timeline").append(`
-					<div class="row align-items-center justify-content-end lines">
-					  <div class="col-8 text-right">
-						<svg id="chart`+i+`" class='chartt'></svg>
-					  </div>
-					  <div class="col-2 text-center full">
-						<div class="circle"><p>`+month[i-1]+`</p></div>
-					  </div>
-					</div>
-					<div class="row timeline">
-					  <div class="col-2">
-						<div class="corner right-bottom"></div>
-					  </div>
-					  <div class="col-8">
-						<hr/>
-					  </div>
-					  <div class="col-2">
-						<div class="corner top-left"></div>
-					  </div>
-					</div>`);
-					chart(plotData,colorData,i,1,s1,s2);
-				}
+				
+				drawTimeline(plotData,colorData,i,s1,s2);
 			}
 		});
 	}						
 }
 
+function drawTimeline(plotData,colorData,i,s1,s2){
+	if(i%2==0 && i > 3 && i <11){
+		$("#timeline").append(`
+		<div class="row align-items-center lines">
+		  <div class="col-2 text-center bottom">
+			<div class="circle"><p>`+month[i-1]+`</p></div>
+		  </div>
+		  <div class="col-8">
+			<svg id="chart`+i+`" class='chartt'></svg>
+		  </div>
+		</div>
+		<div class="row timeline">
+		  <div class="col-2">
+			<div class="corner top-right"></div>
+		  </div>
+		  <div class="col-8">
+			<hr/>
+		  </div>
+		  <div class="col-2">
+			<div class="corner left-bottom"></div>
+		  </div>
+		</div>`);
+		if(plotData.length!=0)
+			chart(plotData,colorData,i,1,s1,s2);
+		else
+			d3.select("#chart"+i).selectAll("text")
+                        .data(["No Survey Data!"])
+                        .enter()
+                        .append("text")
+						.attr("x", (($("#chart"+i).width()/2)))
+						 .attr("y", ($("#chart"+i).height()/2))
+						 .text(function(d) { return d; })
+						 .attr("font-family", "sans-serif")
+						 .attr("font-size", "30px")
+						 .attr("fill", "#fc8d59");
+	}
+	else if (i > 3 && i < 11){
+				
+		$("#timeline").append(`
+		<div class="row align-items-center justify-content-end lines">
+		  <div class="col-8 text-right">
+			<svg id="chart`+i+`" class='chartt'></svg>
+		  </div>
+		  <div class="col-2 text-center full">
+			<div class="circle"><p>`+month[i-1]+`</p></div>
+		  </div>
+		</div>
+		<div class="row timeline">
+		  <div class="col-2">
+			<div class="corner right-bottom"></div>
+		  </div>
+		  <div class="col-8">
+			<hr/>
+		  </div>
+		  <div class="col-2">
+			<div class="corner top-left"></div>
+		  </div>
+		</div>`);
+		if(plotData.length!=0)
+			chart(plotData,colorData,i,1,s1,s2);
+		else
+			d3.select("#chart"+i).selectAll("text")
+                        .data(["No Survey Data!"])
+                        .enter()
+                        .append("text")
+						.attr("x", (($("#chart"+i).width()/2)))
+						 .attr("y", ($("#chart"+i).height()/2))
+						 .text(function(d) { return d; })
+						 .attr("font-family", "sans-serif")
+						 .attr("font-size", "30px")
+						 .attr("fill", "#fc8d59");
+	}
+}
 
 function chart(data,color,ele,speed,s1,s2) {
 
@@ -344,7 +313,7 @@ function chart(data,color,ele,speed,s1,s2) {
 	
 	for( var x=0;x<color.length;x++){
 		$("#chart"+ele+" g:nth-child(1) rect:nth-child("+(x+1)+")").css('fill',color[x]['data']>0?'#21abcf':'orange');
-		$("#chart"+ele+" g:nth-child(2) rect:nth-child("+(x+1)+")").css('fill',color[x]['data1']>0?'blue':'red');
+		$("#chart"+ele+" g:nth-child(2) rect:nth-child("+(x+1)+")").css('fill',color[x]['data1']>0?'#91cf60':'#fc8d59');
 
 	}
 }
