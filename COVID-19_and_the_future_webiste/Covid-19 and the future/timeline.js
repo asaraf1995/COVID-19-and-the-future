@@ -61,7 +61,7 @@ states={
     "WY": "Wyoming"
 }
 var categories= ["Productivity","Employment"]
-var categoryVariableName=[]
+var categoryVariableName=["prod","employment","total_population"]
 function isZero(a){
 	if(a==0){
 		return 2;
@@ -70,18 +70,17 @@ function isZero(a){
 }
 function createTimeline(s1,s2,category,gender,overall){
 	$("#timeline").html("")
-	categoryVariableName[1]="employment"
-	categoryVariableName[0]="prod";
-	if(gender=='male'){
-		categoryVariableName[1]+="_men"
-		categoryVariableName[0]+="_men";
-	}else if(gender=='female'){
-		categoryVariableName[1]+="_women"
-		categoryVariableName[0]+="_women";
-	}else if(gender=='other'){
-		categoryVariableName[1]+="_other"
-		categoryVariableName[0]+="_other";
+	
+	for(var i=0;i<categoryVariableName.length;i++){
+		if(gender=='male'){
+			categoryVariableName[i]+="_men"
+		}else if(gender=='female'){
+			categoryVariableName[i]+="_women"
+		}else if(gender=='other'){
+			categoryVariableName[i]+="_other"
+		}	
 	}
+	
 	if(overall==1){
 		d3.csv("overall_month.csv", function(csv) {
 			for(i=1;i<13;i++){
