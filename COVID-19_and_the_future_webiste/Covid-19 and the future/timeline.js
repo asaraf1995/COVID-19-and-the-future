@@ -326,4 +326,4 @@ function stackMax(serie) {
 	return d3.max(serie, function(d) { return d[1]; });
 }
 
-createTimeline('NJ','IL','all','none',0);
+createTimeline('','','all','none',1);

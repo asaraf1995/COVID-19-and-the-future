@@ -148,4 +148,4 @@ function createMap(category, gender){
 			svg.append("text").attr("x", $("#Interestingfacts_container").width()*0.87).attr("y", $("#Interestingfacts_container").height()*0.85).text("Decrease").style("font-size", "12px").style("fill", "#fff")
 	}
 }
-createMap("productivity","none");
+createMap("all","none");
