@@ -2,24 +2,27 @@ text {
     font: 10px sans-serif;
 }
 .c3 path, .c3 line, .tick text { 
-stroke: white;
+    stroke: white;
 }
 
 .c3 .c3-axis-x path,
 .c3 .c3-axis-x line {
-stroke: white;
+    stroke: white;
 }
 
 .c3 .c3-axis-y path,
 .c3 .c3-axis-y line {
-stroke: white;
+    stroke: white;
 }
 
 .c3-legend-item {
-fill: white;
+    fill: white;
+}
+
+.c3-tooltip-container {
+    color: #222;
 }
 
 #barchart {
-width: 66.66%;
-height: 40vh;
+    height: 35vh;
 }

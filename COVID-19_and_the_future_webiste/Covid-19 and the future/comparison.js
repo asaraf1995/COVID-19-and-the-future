@@ -338,17 +338,63 @@ var data = {
     ]
 };
 
-$(function () {
-    function drawChart(state1, state2) {
-
-        var state;
-        if (typeof state2 !== "undefined") {
-            state = state1 + '_' + state2;
-        } else {
-            state = state1;
+function drawChart(state1, state2) {
+    var state;
+    if (state2) {
+        state = state1 + '_' + state2;
+    } else {
+        state = state1;
+    }
+    if (state.length === 2) {
+    var chart = c3.generate({
+        bindto: "#barchart",
+        data: {
+        x : 'x',
+        columns: eval(data[state]),
+        type: 'area',
+        types: {
+            Productivity: 'area',
+        }, 
+        colors: {
+            Employment: '#1f77b3',
+            Productivity: '#ff7f0f'
+        },
+        names: {
+            Employment: 'Employment - ' + stateDict[state.substring(0, 2)],
+            Productivity: 'Productivity - ' + stateDict[state.substring(0, 2)]
         }
-
-        if (state.length === 2 || state === 'all') {
+        },
+        bar: {
+        width: {
+            ratio: 0.25
+        }
+        },
+        axis: {
+        x: {
+            type: 'category'
+        }
+        },
+        grid: {
+        y: {
+            lines: [{value:0}]
+        }
+        },
+        tooltip: {
+        format: {
+            title: function (d) { 
+            return monthDict[d + 4]; 
+            },
+            value: function (value) {
+            return value + '%';
+            }
+        }
+        },
+        legend: {
+        position: 'right'
+        }
+    });
+    } 
+    else if (state === "all") {
         var chart = c3.generate({
             bindto: "#barchart",
             data: {
@@ -392,72 +438,71 @@ $(function () {
             position: 'right'
             }
         });
-        } 
-        else if (state.length > 2 && state !== 'all') {
-            var s1 = data[state.substring(0, 2)];
-            var s2 = data[state.substring(3, 5)];
-            var d = [['x', 'April', 'May', 'June', 'July', 'August', 'September', 'October']];
-            d.push(['EmpS1'].concat(s1[1].slice(1, 8)));
-            d.push(['ProdS1'].concat(s1[2].slice(1, 8)));
-            d.push(['EmpS2'].concat(s2[1].slice(1, 8)));
-            d.push(['ProdS2'].concat(s2[2].slice(1, 8)));
-            var state_name = d;
-            var chart = c3.generate({
-                bindto: "#barchart",
-                data: {
-                x : 'x',
-                columns: eval(state_name),
-                type: 'area',
-                types: {
-                    ProdS1: 'area',
-                    ProdS2: 'area'
-                }, 
-                colors: {
-                    EmpS1: '#1f77b3',
-                    EmpS2: '#ff7f0f',
-                    ProdS1: '#144c72',
-                    ProdS2: '#c25a00'
-                },
-                names: {
-                    EmpS1: 'Employment - ' + stateDict[state.substring(0, 2)],
-                    EmpS2: 'Employment - ' + stateDict[state.substring(3, 5)],
-                    ProdS1: 'Productivity - ' + stateDict[state.substring(0, 2)],
-                    ProdS2: 'Productivity - ' + stateDict[state.substring(3, 5)]
-                },
-                groups: [
-                    ['EmpS1', 'EmpS2']
-                ]
-                },
-                bar: {
-                width: {
-                    ratio: 0.25
-                }
-                },
-                axis: {
-                x: {
-                    type: 'category'
-                }
-                },
-                grid: {
-                y: {
-                    lines: [{value:0}]
-                }
-                },
-                tooltip: {
-                format: {
-                    title: function (d) { 
-                    return monthDict[d + 4]; 
-                    },
-                    value: function (value) {
-                    return value + '%';
-                    }
-                }
-                },
-                legend: {
-                position: 'right'
-                }
-            });
-        }
     }
-    drawChart('IL', 'NY');
-});
+    else if (state.length > 2 && state !== 'all') {
+        var s1 = data[state.substring(0, 2)];
+        var s2 = data[state.substring(3, 5)];
+        var d = [['x', 'April', 'May', 'June', 'July', 'August', 'September', 'October']];
+        d.push(['EmpS1'].concat(s1[1].slice(1, 8)));
+        d.push(['ProdS1'].concat(s1[2].slice(1, 8)));
+        d.push(['EmpS2'].concat(s2[1].slice(1, 8)));
+        d.push(['ProdS2'].concat(s2[2].slice(1, 8)));
+        var state_name = d;
+        var chart = c3.generate({
+            bindto: "#barchart",
+            data: {
+            x : 'x',
+            columns: eval(state_name),
+            type: 'area',
+            types: {
+                ProdS1: 'area',
+                ProdS2: 'area'
+            }, 
+            colors: {
+                EmpS1: '#1f77b3',
+                EmpS2: '#ff7f0f',
+                ProdS1: '#144c72',
+                ProdS2: '#c25a00'
+            },
+            names: {
+                EmpS1: 'Employment - ' + stateDict[state.substring(0, 2)],
+                EmpS2: 'Employment - ' + stateDict[state.substring(3, 5)],
+                ProdS1: 'Productivity - ' + stateDict[state.substring(0, 2)],
+                ProdS2: 'Productivity - ' + stateDict[state.substring(3, 5)]
+            },
+            groups: [
+                ['EmpS1', 'EmpS2']
+            ]
+            },
+            bar: {
+            width: {
+                ratio: 0.25
+            }
+            },
+            axis: {
+            x: {
+                type: 'category'
+            }
+            },
+            grid: {
+            y: {
+                lines: [{value:0}]
+            }
+            },
+            tooltip: {
+            format: {
+                title: function (d) { 
+                return monthDict[d + 4]; 
+                },
+                value: function (value) {
+                return value + '%';
+                }
+            }
+            },
+            legend: {
+                position: 'right'
+            }
+        });
+    }
+}
+drawChart('all');

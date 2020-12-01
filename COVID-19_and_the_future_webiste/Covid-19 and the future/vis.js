@@ -3,6 +3,7 @@ $("select").change(function(){
 	createMap($("#category").val(),$("#gender").val());
 	stateVars=[];
 	createTimeline("","",$("#category").val(),$("#gender").val(),1);
+	drawChart("all");
 })
 
 var facts={};
@@ -160,6 +161,7 @@ function createMap(category, gender){
 					mapEle[0]=this;
 				}
 				createTimeline(stateVars[0],stateVars[1],$("#category").val(),$("#gender").val(),0);
+				drawChart(stateVars[0], stateVars[1]);
 			});
 
 		country.append( 'rect' )
