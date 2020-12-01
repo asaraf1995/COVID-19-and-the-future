@@ -63,17 +63,25 @@ states={
 var categories= ["Productivity","Employment"];
 var categoryVariableName=["prod","employment","total_population"];
 var stateVars=["",""];
-
+var max=0;
 function isZero(a){
 	if(a==0){
-		return 2;
+		return 0;
 	}
 	return a;
 }
 
+function findMax(csv){
+	for(var i=0;i<csv.length;i++){
+		for(var j=0;j<categoryVariableName.length-1;j++){
+			max=Math.max(max,Math.abs(csv[i][categoryVariableName[j]]))
+		}
+	}
+}
+
 function createTimeline(s1,s2,category,gender,overall){
 	$("#timeline").html("")
-	
+	categoryVariableName=["prod","employment","total_population"]
 	for(var i=0;i<categoryVariableName.length;i++){
 		if(gender=='male'){
 			categoryVariableName[i]+="_men"
@@ -86,6 +94,7 @@ function createTimeline(s1,s2,category,gender,overall){
 	
 	if(overall==1){
 		d3.csv("overall_month.csv", function(csv) {
+			findMax(csv);
 			for(i=1;i<13;i++){
 				plotData=[];
 				colorData=[];
@@ -95,19 +104,20 @@ function createTimeline(s1,s2,category,gender,overall){
 				if(monthData.length>0){
 					if(category=='all'){
 						for(var x=0;x<categories.length;x++){
-							plotData.push({"column":categories[x],"data":isZero(Math.abs(monthData[0][categoryVariableName[x]]))});
+							plotData.push({"column":categories[x],"data":Math.abs(monthData[0][categoryVariableName[x]])});
 							colorData.push({"column":categories[x],"data":monthData[0][categoryVariableName[x]]});
 						}
 					}else if (category=='productivity'){
-						plotData.push({"column":categories[0],"data":isZero(Math.abs(monthData[0][categoryVariableName[0]]))});
+						plotData.push({"column":categories[0],"data":Math.abs(monthData[0][categoryVariableName[0]])});
 						colorData.push({"column":categories[0],"data":monthData[0][categoryVariableName[0]]});
 					}else{
-						plotData.push({"column":categories[1],"data":isZero(Math.abs(monthData[0][categoryVariableName[1]]))});
+						plotData.push({"column":categories[1],"data":Math.abs(monthData[0][categoryVariableName[1]])});
 						colorData.push({"column":categories[1],"data":monthData[0][categoryVariableName[1]]});
 					}
 				}
-				drawTimeline(plotData,colorData,i,s1,s2);
+				drawTimeline(plotData,colorData,i,s1,s2,overall);
 			}
+			max=0;
 		});
 	}
 	else{
@@ -119,6 +129,8 @@ function createTimeline(s1,s2,category,gender,overall){
 			csv2 = csv.filter(function(row) {
 				return row['_id.state'] == s2;
 			});
+			findMax(csv1);
+			findMax(csv2);
 			for(i=1;i<13;i++){
 				plotData=[];
 				colorData=[];
@@ -131,24 +143,25 @@ function createTimeline(s1,s2,category,gender,overall){
 				});
 				if(category=='all'){
 					for(var x=0;x<categories.length;x++){
-						plotData.push({"column":categories[x],"data":(monthData1.length>0?isZero(Math.abs(monthData1[0][categoryVariableName[x]])):0),"data1":(monthData2.length>0?(-(isZero(Math.abs(monthData2[0][categoryVariableName[x]])))):0)});
+						plotData.push({"column":categories[x],"data":(monthData1.length>0?Math.abs(monthData1[0][categoryVariableName[x]]):0),"data1":(monthData2.length>0?(-(Math.abs(monthData2[0][categoryVariableName[x]]))):0)});
 						colorData.push({"column":categories[x],"data":(monthData1.length>0?monthData1[0][categoryVariableName[x]]:0),"data1":(monthData2.length>0?monthData2[0][categoryVariableName[x]]:0)});
 					}
 				}else if (category=='productivity'){
-					plotData.push({"column":categories[0],"data":(monthData1.length>0?isZero(Math.abs(monthData1[0][categoryVariableName[0]])):0),"data1":(monthData2.length>0?(-(isZero(Math.abs(monthData2[0][categoryVariableName[0]])))):0)});
+					plotData.push({"column":categories[0],"data":(monthData1.length>0?Math.abs(monthData1[0][categoryVariableName[0]]):0),"data1":(monthData2.length>0?(-(Math.abs(monthData2[0][categoryVariableName[0]]))):0)});
 					colorData.push({"column":categories[0],"data":(monthData1.length>0?monthData1[0][categoryVariableName[0]]:0),"data1":(monthData2.length>0?monthData2[0][categoryVariableName[0]]:0)});
 				}else{
-					plotData.push({"column":categories[1],"data":(monthData1.length>0?isZero(Math.abs(monthData1[0][categoryVariableName[1]])):0),"data1":(monthData2.length>0?(-(isZero(Math.abs(monthData2[0][categoryVariableName[1]])))):0)});
+					plotData.push({"column":categories[1],"data":(monthData1.length>0?Math.abs(monthData1[0][categoryVariableName[1]]):0),"data1":(monthData2.length>0?(-(Math.abs(monthData2[0][categoryVariableName[1]]))):0)});
 					colorData.push({"column":categories[1],"data":(monthData1.length>0?monthData1[0][categoryVariableName[1]]:0),"data1":(monthData2.length>0?monthData2[0][categoryVariableName[1]]:0)});
 				}
 				
-				drawTimeline(plotData,colorData,i,s1,s2);
+				drawTimeline(plotData,colorData,i,s1,s2,overall);
 			}
+			max=0;
 		});
 	}						
 }
 
-function drawTimeline(plotData,colorData,i,s1,s2){
+function drawTimeline(plotData,colorData,i,s1,s2,overall){
 	if(i%2==0 && i > 3 && i <11){
 		$("#timeline").append(`
 		<div class="row align-items-center lines">
@@ -170,19 +183,6 @@ function drawTimeline(plotData,colorData,i,s1,s2){
 			<div class="corner left-bottom"></div>
 		  </div>
 		</div>`);
-		if(plotData.length!=0)
-			chart(plotData,colorData,i,1,s1,s2);
-		else
-			d3.select("#chart"+i).selectAll("text")
-                        .data(["No Survey Data!"])
-                        .enter()
-                        .append("text")
-						.attr("x", (($("#chart"+i).width()/2)))
-						 .attr("y", ($("#chart"+i).height()/2))
-						 .text(function(d) { return d; })
-						 .attr("font-family", "sans-serif")
-						 .attr("font-size", "30px")
-						 .attr("fill", "#fc8d59");
 	}
 	else if (i > 3 && i < 11){
 				
@@ -206,23 +206,12 @@ function drawTimeline(plotData,colorData,i,s1,s2){
 			<div class="corner top-left"></div>
 		  </div>
 		</div>`);
-		if(plotData.length!=0)
-			chart(plotData,colorData,i,1,s1,s2);
-		else
-			d3.select("#chart"+i).selectAll("text")
-                        .data(["No Survey Data!"])
-                        .enter()
-                        .append("text")
-						.attr("x", (($("#chart"+i).width()/2)))
-						 .attr("y", ($("#chart"+i).height()/2))
-						 .text(function(d) { return d; })
-						 .attr("font-family", "sans-serif")
-						 .attr("font-size", "30px")
-						 .attr("fill", "#fc8d59");
 	}
+	if(plotData.length!=0)
+			chart(plotData,colorData,i,1,s1,s2,overall);
 }
 
-function chart(data,color,ele,speed,s1,s2) {
+function chart(data,color,ele,speed,s1,s2,overall) {
 
 	var keys = Object.keys(data[0]).slice(1),
 		copy = [].concat(keys);
@@ -251,8 +240,8 @@ function chart(data,color,ele,speed,s1,s2) {
 	y.domain(data.map(d => d.column));
 
 	x.domain([
-		d3.min(series, stackMin), 
-		d3.max(series, stackMax)
+		overall==1?0:-(max), 
+		max
 	]).nice();
 
 	var barGroups = svg.selectAll("g.layer")
@@ -286,7 +275,7 @@ function chart(data,color,ele,speed,s1,s2) {
 				})[0]['data1']
 			}
 			txt=`<div class='row'>
-			<div class='col-12 tooltiptxt'>`+(d['0']==0?states[s1]:states[s2])+`</div></div><div class='row'>
+			<div class='col-12 tooltiptxt'>`+(overall!=1?(d['0']==0?states[s1]:states[s2]):"USA")+`</div></div><div class='row'>
 			<div class='col-12 tooltiptxt'>`+(dd>0?("An increase of "+dd+"%"):(dd==0?"No change":"A decrease of "+Math.abs(dd)+"%"))+`</div>
 			</div>`
 			d3.select(this).style('opacity',1);
@@ -326,4 +315,4 @@ function stackMax(serie) {
 	return d3.max(serie, function(d) { return d[1]; });
 }
 
-createTimeline('','','all','none',1);
+createTimeline("","",$("#category").val(),$("#gender").val(),1);

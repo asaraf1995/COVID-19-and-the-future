@@ -1,5 +1,10 @@
 mapEle=[]
+$("select").change(function(){
+	createMap($("#category").val(),$("#gender").val());
+	createTimeline("","",$("#category").val(),$("#gender").val(),1);
+})
 function createMap(category, gender){
+	categoryVariableName=["prod","employment","total_population"];
 	d3.select( '#vis_1' ).selectAll('*').remove();
 	for(var i=0;i<categoryVariableName.length;i++){
 		if(gender=='male'){
@@ -110,7 +115,7 @@ function createMap(category, gender){
 					mapEle[1]=mapEle[0];
 					mapEle[0]=this;
 				}
-				createTimeline(stateVars[0],stateVars[1],$("#gender").val(),$("#category").val(),0);
+				createTimeline(stateVars[0],stateVars[1],$("#category").val(),$("#gender").val(),0);
 			});
 
 		country.append( 'rect' )
@@ -141,11 +146,11 @@ function createMap(category, gender){
 			.attr( 'dx', 0 )
 			.attr( 'dy', '1em' )
 			.style( 'fill', 'rgba(0,0,0,.75)' )
-			.text( d => (d.title || d.key) + ' (' + stateDataMap[d.key] + ' % )');
+			.text( d => (d.title || d.key) + ' (' + stateDataMap[d.key] + ($("#category").val()=='all'?'':' %')+' )');
 			svg.append("circle").attr("cx",$("#Interestingfacts_container").width()*0.86).attr("cy",$("#Interestingfacts_container").height()*0.8).attr("r", 8).style("fill", "#91cf60")
 			svg.append("circle").attr("cx",$("#Interestingfacts_container").width()*0.86).attr("cy",$("#Interestingfacts_container").height()*0.84).attr("r", 8).style("fill", "#fc8d59")
 			svg.append("text").attr("x", $("#Interestingfacts_container").width()*0.87).attr("y", $("#Interestingfacts_container").height()*0.81).text("Increase").style("font-size", "12px").style("fill", "#fff")
 			svg.append("text").attr("x", $("#Interestingfacts_container").width()*0.87).attr("y", $("#Interestingfacts_container").height()*0.85).text("Decrease").style("font-size", "12px").style("fill", "#fff")
 	}
 }
-createMap("all","none");
+createMap($("#category").val(),$("#gender").val());

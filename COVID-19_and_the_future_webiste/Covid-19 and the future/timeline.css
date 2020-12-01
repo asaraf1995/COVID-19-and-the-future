@@ -5,6 +5,7 @@
     background-color: rgb(255, 50, 50);
     width:50px;
 	height:50px;
+	margin:auto;
 }
 
 .circle p{
@@ -110,17 +111,13 @@ div.tooltip {
 }
 
 .perimeter {
-  stroke-dasharray: 2313.919921875;
-  stroke-dashoffset: 2313.919921875;
-   animation: dash 2s linear alternate infinite;
+  stroke-dasharray: 75;
+   animation: dash 10s linear infinite;
 }
 
 @keyframes dash {
-  from {
-    stroke-dashoffset: 2313.919921875;
-  }
   to {
-    stroke-dashoffset: 0;
+    stroke-dashoffset: 1000;
   }
 }
 
