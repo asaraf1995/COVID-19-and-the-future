@@ -1,10 +1,31 @@
 mapEle=[]
 $("select").change(function(){
 	createMap($("#category").val(),$("#gender").val());
+	stateVars=[];
 	createTimeline("","",$("#category").val(),$("#gender").val(),1);
 })
+
+var facts={};
+function sentenceFact(key){
+	ret="";
+	if(key.includes("employment")){
+		ret+="Employment "
+	}else if(key.includes("prod")){
+		ret+="Productivity "
+	}
+	
+	if(key.includes("_women")){
+		ret+="for females "
+	}else if(key.includes("_men")){
+		ret+="for males "
+	} else if(key.includes("_other")){
+		ret+="for other genders "
+	}
+	ret+="was affected the most in this state.";
+	return ret;
+}
 function createMap(category, gender){
-	categoryVariableName=["prod","employment","total_population"];
+	 resetCategoryVars();
 	d3.select( '#vis_1' ).selectAll('*').remove();
 	for(var i=0;i<categoryVariableName.length;i++){
 		if(gender=='male'){
@@ -20,11 +41,16 @@ function createMap(category, gender){
 		if(category=="all"){
 			focusVar=categoryVariableName[2];
 		}
-		else if(category=="productivity"){
-			focusVar=categoryVariableName[0];
-		}else{
-			focusVar=categoryVariableName[1];
-		}
+		else{
+			var x=0
+			for(x=0;x<categories.length;x++){
+				if(categories[x].toLowerCase()==category){
+					break;
+				}
+			}
+			focusVar=categoryVariableName[x];
+		} 
+			
 		stateDataMap[d['_id.state']] = +d[focusVar];
 		maxData = Math.max(Math.abs(+d[focusVar]), maxData);
 		return { 'state': d['_id.state'],
@@ -77,7 +103,9 @@ function createMap(category, gender){
 				return d;
 			})
 			.filter( Boolean );
-
+		var div = d3.select("#Interestingfacts_container").append("div")	
+		.attr("class", "tooltip")				
+		.style("opacity", 0);
 		var svg = d3.select( '#vis_1' ).append( 'svg' )
 			.attr( 'width', width + margin.left + margin.right )
 			.attr( 'height', height + margin.top + margin.bottom )
@@ -87,6 +115,22 @@ function createMap(category, gender){
 		var country = svg.selectAll( 'g' ).data( countries ).enter()
 			.append( 'g' )
 			.attr( 'transform', d => `translate(${[ rx( d.x ), ry( d.y ) ]})` )
+			.on("mouseover", function(d) {
+				txt=`<div class='row'>
+				<div class='col-12 tooltiptxt'>`+(facts[d.key]?sentenceFact(facts[d.key]):"No valuable information here.")+`</div>
+				</div>`
+				div.transition()		
+					.duration(100)		
+					.style("opacity", 0.9);		
+				div.html(txt)	
+					.style("left", (d3.event.pageX*.8) + "px")		
+					.style("top", (d3.event.pageY-20) + "px");	
+            })					
+			.on("mouseout", function(d) {
+				div.transition()		
+					.duration(500)		
+					.style("opacity", 0);	
+			})
 			.on('click', function(d, i) {
 				$(this).find("rect").first().attr("stroke","#21abcf")
 				$(this).find("rect").first().attr("stroke-width","4")
@@ -154,3 +198,15 @@ function createMap(category, gender){
 	}
 }
 createMap($("#category").val(),$("#gender").val());
+d3.csv("overall_state.csv", function(csv) {
+	facts={};
+	for(var i=0;i<csv.length;i++){
+		intresting=0;
+		for(var j=1;j<Object.keys(csv[i]).length-4;j++){
+			if(Math.abs(csv[i][Object.keys(csv[i])[j]]) > intresting){
+				facts[csv[i][Object.keys(csv[i])[0]]]=Object.keys(csv[i])[j];
+				intresting=facts[csv[i][Object.keys(csv[i])[j]]]
+			}
+		}
+	}
+});

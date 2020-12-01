@@ -1,76 +1,3 @@
-var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
-states={
-    "AL": "Alabama",
-    "AK": "Alaska",
-    "AS": "American Samoa",
-    "AZ": "Arizona",
-    "AR": "Arkansas",
-    "CA": "California",
-    "CO": "Colorado",
-    "CT": "Connecticut",
-    "DE": "Delaware",
-    "DC": "District Of Columbia",
-    "FM": "Federated States Of Micronesia",
-    "FL": "Florida",
-    "GA": "Georgia",
-    "GU": "Guam",
-    "HI": "Hawaii",
-    "ID": "Idaho",
-    "IL": "Illinois",
-    "IN": "Indiana",
-    "IA": "Iowa",
-    "KS": "Kansas",
-    "KY": "Kentucky",
-    "LA": "Louisiana",
-    "ME": "Maine",
-    "MH": "Marshall Islands",
-    "MD": "Maryland",
-    "MA": "Massachusetts",
-    "MI": "Michigan",
-    "MN": "Minnesota",
-    "MS": "Mississippi",
-    "MO": "Missouri",
-    "MT": "Montana",
-    "NE": "Nebraska",
-    "NV": "Nevada",
-    "NH": "New Hampshire",
-    "NJ": "New Jersey",
-    "NM": "New Mexico",
-    "NY": "New York",
-    "NC": "North Carolina",
-    "ND": "North Dakota",
-    "MP": "Northern Mariana Islands",
-    "OH": "Ohio",
-    "OK": "Oklahoma",
-    "OR": "Oregon",
-    "PW": "Palau",
-    "PA": "Pennsylvania",
-    "PR": "Puerto Rico",
-    "RI": "Rhode Island",
-    "SC": "South Carolina",
-    "SD": "South Dakota",
-    "TN": "Tennessee",
-    "TX": "Texas",
-    "UT": "Utah",
-    "VT": "Vermont",
-    "VI": "Virgin Islands",
-    "VA": "Virginia",
-    "WA": "Washington",
-    "WV": "West Virginia",
-    "WI": "Wisconsin",
-    "WY": "Wyoming"
-}
-var categories= ["Productivity","Employment"];
-var categoryVariableName=["prod","employment","total_population"];
-var stateVars=["",""];
-var max=0;
-function isZero(a){
-	if(a==0){
-		return 0;
-	}
-	return a;
-}
-
 function findMax(csv){
 	for(var i=0;i<csv.length;i++){
 		for(var j=0;j<categoryVariableName.length-1;j++){
@@ -81,7 +8,7 @@ function findMax(csv){
 
 function createTimeline(s1,s2,category,gender,overall){
 	$("#timeline").html("")
-	categoryVariableName=["prod","employment","total_population"]
+	resetCategoryVars();
 	for(var i=0;i<categoryVariableName.length;i++){
 		if(gender=='male'){
 			categoryVariableName[i]+="_men"
@@ -107,12 +34,15 @@ function createTimeline(s1,s2,category,gender,overall){
 							plotData.push({"column":categories[x],"data":Math.abs(monthData[0][categoryVariableName[x]])});
 							colorData.push({"column":categories[x],"data":monthData[0][categoryVariableName[x]]});
 						}
-					}else if (category=='productivity'){
-						plotData.push({"column":categories[0],"data":Math.abs(monthData[0][categoryVariableName[0]])});
-						colorData.push({"column":categories[0],"data":monthData[0][categoryVariableName[0]]});
 					}else{
-						plotData.push({"column":categories[1],"data":Math.abs(monthData[0][categoryVariableName[1]])});
-						colorData.push({"column":categories[1],"data":monthData[0][categoryVariableName[1]]});
+						var x=0
+						for(x=0;x<categories.length;x++){
+							if(categories[x].toLowerCase()==category){
+								break;
+							}
+						}
+						plotData.push({"column":categories[x],"data":Math.abs(monthData[0][categoryVariableName[x]])});
+						colorData.push({"column":categories[x],"data":monthData[0][categoryVariableName[x]]});
 					}
 				}
 				drawTimeline(plotData,colorData,i,s1,s2,overall);
@@ -146,12 +76,15 @@ function createTimeline(s1,s2,category,gender,overall){
 						plotData.push({"column":categories[x],"data":(monthData1.length>0?Math.abs(monthData1[0][categoryVariableName[x]]):0),"data1":(monthData2.length>0?(-(Math.abs(monthData2[0][categoryVariableName[x]]))):0)});
 						colorData.push({"column":categories[x],"data":(monthData1.length>0?monthData1[0][categoryVariableName[x]]:0),"data1":(monthData2.length>0?monthData2[0][categoryVariableName[x]]:0)});
 					}
-				}else if (category=='productivity'){
-					plotData.push({"column":categories[0],"data":(monthData1.length>0?Math.abs(monthData1[0][categoryVariableName[0]]):0),"data1":(monthData2.length>0?(-(Math.abs(monthData2[0][categoryVariableName[0]]))):0)});
-					colorData.push({"column":categories[0],"data":(monthData1.length>0?monthData1[0][categoryVariableName[0]]:0),"data1":(monthData2.length>0?monthData2[0][categoryVariableName[0]]:0)});
 				}else{
-					plotData.push({"column":categories[1],"data":(monthData1.length>0?Math.abs(monthData1[0][categoryVariableName[1]]):0),"data1":(monthData2.length>0?(-(Math.abs(monthData2[0][categoryVariableName[1]]))):0)});
-					colorData.push({"column":categories[1],"data":(monthData1.length>0?monthData1[0][categoryVariableName[1]]:0),"data1":(monthData2.length>0?monthData2[0][categoryVariableName[1]]:0)});
+					var x=0;
+					for(x=0;x<categories.length;x++){
+						if(categories[x].toLowerCase()==category){
+							break;
+						}
+					}
+					plotData.push({"column":categories[x],"data":(monthData1.length>0?Math.abs(monthData1[0][categoryVariableName[x]]):0),"data1":(monthData2.length>0?(-(Math.abs(monthData2[0][categoryVariableName[x]]))):0)});
+						colorData.push({"column":categories[x],"data":(monthData1.length>0?monthData1[0][categoryVariableName[x]]:0),"data1":(monthData2.length>0?monthData2[0][categoryVariableName[x]]:0)});
 				}
 				
 				drawTimeline(plotData,colorData,i,s1,s2,overall);
@@ -316,3 +249,14 @@ function stackMax(serie) {
 }
 
 createTimeline("","",$("#category").val(),$("#gender").val(),1);
+
+
+d3.csv("overall_state.csv", function(csv) {
+	for(var i=0;i<csv.length;i++){
+		intresting=0;
+		for(var j=1;j<Object.keys(csv[i]).length-4;j++){
+			if(Math.abs(csv[i][Object.keys(csv[i])[j]]) > intresting)
+				facts[csv[i][Object.keys(csv[i])[j]]]=Object.keys(csv[i])[j];
+		}
+	}
+});
