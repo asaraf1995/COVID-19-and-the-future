@@ -18,7 +18,8 @@ function createTimeline(s1,s2,category,gender,overall){
 			categoryVariableName[i]+="_other"
 		}	
 	}
-	
+	$("#s1").html("");
+	$("#s2").html("");
 	if(overall==1){
 		d3.csv("overall_month.csv", function(csv) {
 			findMax(csv);
@@ -49,6 +50,7 @@ function createTimeline(s1,s2,category,gender,overall){
 			}
 			max=0;
 		});
+		$("#s2").html("<div class='row' style='justify-content: center;'><h3>USA</h3><div style='color:"+colorList[0]+";bottom: 4px;position:relative;'>&uarr;</div><div style='color:"+colorList[1]+";bottom: 4px;position:relative;'>&darr;</div>");
 	}
 	else{
 		d3.csv("overall_month_state.csv", function(csv) {
@@ -91,7 +93,10 @@ function createTimeline(s1,s2,category,gender,overall){
 			}
 			max=0;
 		});
-	}						
+		$("#s1").html("<div class='row' style='justify-content: center;'><h3>"+states[s1]+"</h3><div style='color:"+colorList[0]+";bottom: 4px;position:relative;'>&uarr;</div><div style='color:"+colorList[1]+";bottom: 4px;position:relative;'>&darr;</div>");
+		if(s2!="")
+			$("#s2").html("<div class='row' style='justify-content: center;'><h3>"+states[s2]+"</h3><div style='color:"+colorList[2]+";bottom: 4px;position:relative;'>&uarr;</div><div style='color:"+colorList[3]+";bottom: 4px;position:relative;'>&darr;</div>");
+	}
 }
 
 function drawTimeline(plotData,colorData,i,s1,s2,overall){
@@ -220,7 +225,7 @@ function chart(data,color,ele,speed,s1,s2,overall) {
                 .style("top", (d3.event.pageY-20) + "px");	
             })					
         .on("mouseout", function(d) {
-			d3.select(this).style('opacity',0.7);
+			d3.select(this).style('opacity',0.8);
             div.transition()		
                 .duration(500)		
                 .style("opacity", 0);	
@@ -234,9 +239,8 @@ function chart(data,color,ele,speed,s1,s2,overall) {
 	.attr("class", "y-axis").transition().duration(speed).attr("transform", "translate(" + (($("#chart"+ele).width()/2)+($("#chart"+ele).width()/10)) + ",0)").call(d3.axisLeft(y));
 	
 	for( var x=0;x<color.length;x++){
-		$("#chart"+ele+" g:nth-child(1) rect:nth-child("+(x+1)+")").css('fill',color[x]['data']>0?'#21abcf':'orange');
-		$("#chart"+ele+" g:nth-child(2) rect:nth-child("+(x+1)+")").css('fill',color[x]['data1']>0?'#91cf60':'#fc8d59');
-
+		$("#chart"+ele+" g:nth-child(1) rect:nth-child("+(x+1)+")").css('fill',color[x]['data']>0?colorList[0]:colorList[1]);
+		$("#chart"+ele+" g:nth-child(2) rect:nth-child("+(x+1)+")").css('fill',color[x]['data1']>0?colorList[2]:colorList[3]);
 	}
 }
 
@@ -249,7 +253,6 @@ function stackMax(serie) {
 }
 
 createTimeline("","",$("#category").val(),$("#gender").val(),1);
-
 
 d3.csv("overall_state.csv", function(csv) {
 	for(var i=0;i<csv.length;i++){

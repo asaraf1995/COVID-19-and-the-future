@@ -133,7 +133,7 @@ function createMap(category, gender){
 					.style("opacity", 0);	
 			})
 			.on('click', function(d, i) {
-				$(this).find("rect").first().attr("stroke","#21abcf")
+				$(this).find("rect").first().attr("stroke",colorList[4])
 				$(this).find("rect").first().attr("stroke-width","4")
 				$(this).find("rect").first().attr("class","perimeter")
 				
@@ -169,9 +169,9 @@ function createMap(category, gender){
 			.attr( 'height', ry.rangeBand() )
 			.style( 'fill', function(d) {
 			  if (stateDataMap[d.key] > 0){
-				  return '#91cf60'
+				  return colorList[0]
 			  }
-			  return '#fc8d59'
+			  return colorList[1]
 			});
 
 		country.append( 'rect' )
@@ -193,8 +193,8 @@ function createMap(category, gender){
 			.attr( 'dy', '1em' )
 			.style( 'fill', 'rgba(0,0,0,.75)' )
 			.text( d => (d.title || d.key) + ' (' + stateDataMap[d.key] + ($("#category").val()=='all'?'':' %')+' )');
-			svg.append("circle").attr("cx",$("#Interestingfacts_container").width()*0.26).attr("cy",$("#Interestingfacts_container").height()*0.1).attr("r", 8).style("fill", "#91cf60")
-			svg.append("circle").attr("cx",$("#Interestingfacts_container").width()*0.26).attr("cy",$("#Interestingfacts_container").height()*0.14).attr("r", 8).style("fill", "#fc8d59")
+			svg.append("circle").attr("cx",$("#Interestingfacts_container").width()*0.26).attr("cy",$("#Interestingfacts_container").height()*0.1).attr("r", 8).style("fill", colorList[0])
+			svg.append("circle").attr("cx",$("#Interestingfacts_container").width()*0.26).attr("cy",$("#Interestingfacts_container").height()*0.14).attr("r", 8).style("fill", colorList[1])
 			svg.append("text").attr("x", $("#Interestingfacts_container").width()*0.27).attr("y", $("#Interestingfacts_container").height()*0.11).text("Increase").style("font-size", "12px").style("fill", "#fff")
 			svg.append("text").attr("x", $("#Interestingfacts_container").width()*0.27).attr("y", $("#Interestingfacts_container").height()*0.15).text("Decrease").style("font-size", "12px").style("fill", "#fff")
 	}
