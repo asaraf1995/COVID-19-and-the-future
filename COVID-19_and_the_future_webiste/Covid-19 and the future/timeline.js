@@ -222,7 +222,7 @@ function chart(data,color,ele,speed,s1,s2,overall) {
                 .style("opacity", 0.9);		
             div.html(txt)	
                 .style("left", (d3.event.pageX*.2) + "px")		
-                .style("top", (d3.event.pageY-20) + "px");	
+                .style("top", (d3.event.pageY-($('.chartt').height())) + "px");	
             })					
         .on("mouseout", function(d) {
 			d3.select(this).style('opacity',0.8);

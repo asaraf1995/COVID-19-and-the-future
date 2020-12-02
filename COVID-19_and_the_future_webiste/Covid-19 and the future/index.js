@@ -90,7 +90,7 @@ var categories= ["Productivity","Employment"];
 var categoryVariableName=["prod","employment","total_population"];
 var stateVars=["",""];
 var max=0;
-var colorList=['#99d594','#fc8d59','#e6f598','#fee08b','#EEEEEE'];
+var colorList=['#99d594','#fc8d59','#e6f598','#fee08b','#328bd8'];
 function resetCategoryVars(){
 	categoryVariableName=["prod","employment","total_population"];
 }
