@@ -108,6 +108,7 @@ body {
 
 .filters{
 	text-align:center;
+	font-size:initial !important;
 }
 
 ::-webkit-scrollbar {
