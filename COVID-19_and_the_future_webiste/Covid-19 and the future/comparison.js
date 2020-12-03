@@ -75,7 +75,7 @@ var data = {
         ['x', 'April', 'May', 'June', 'July', 'August', 'September', 'October'],
         ['Employment', -5.26, -2.58, -5.22, -7.69, -8.14, -5.4, -7.89],
         ['Productivity', -17.5, -9.15, -11.3, -0.72, -3.05, 2.42, 0],
-        ['Job Change', 1.58, 1.88, 4.35, 5.76, 7.03, 9.68, 8.27]
+        ['JobChange', 1.58, 1.88, 4.35, 5.76, 7.03, 9.68, 8.27]
     ],
     'AK': [
         ['x', 'April', 'May', 'June', 'July', 'August', 'September', 'October'],
@@ -98,7 +98,7 @@ var data = {
     'AZ': [
         ['x', 'April', 'May', 'June', 'July', 'August', 'September', 'October'],
         ['Employment', -5.49, 0, 0, -8.33, -4.18, -14.29, -10],
-        ['Productivity', -11.37, -26.47, 25, 0.24, -3.48, 0, -10]
+        ['Productivity', -11.37, -26.47, 25, 0.24, -3.48, 0, -10],
         ['JobChange', 3.53, 0, 0, 3.62, 3.14, 7.14, 10]
     ],
     'CA': [
@@ -460,7 +460,7 @@ function drawChart(state1, state2) {
                 Employment: '#328bd8',
                 Productivity: '#fc8d59',
                 JobChange: '#99d594'
-            }
+            },
             },
             axis: {
             x: {
