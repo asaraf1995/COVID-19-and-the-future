@@ -13,6 +13,8 @@ function sentenceFact(key){
 		ret+="Employment "
 	}else if(key.includes("prod")){
 		ret+="Productivity "
+	}else if(key.includes("job")){
+		ret+="Job Change "
 	}
 	
 	if(key.includes("_women")){
@@ -40,7 +42,7 @@ function createMap(category, gender){
 	function parseRow(d){
 		var focusVar="";
 		if(category=="all"){
-			focusVar=categoryVariableName[2];
+			focusVar=categoryVariableName[categoryVariableName.length-1];
 		}
 		else{
 			var x=0

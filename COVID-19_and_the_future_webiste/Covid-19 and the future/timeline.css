@@ -70,6 +70,7 @@
 }
 .tick text{
 	fill:#fff;
+	stroke:none;
 }
 #timeline{
 	
