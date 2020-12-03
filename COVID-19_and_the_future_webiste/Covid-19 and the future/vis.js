@@ -1,5 +1,8 @@
 mapEle=[]
 $("select").change(function(){
+	$("#loading").css("display","flex");
+	$("#loading").css("background-color","rgb(0,0,0,0.6)");
+	load(150);
 	createMap($("#category").val(),$("#gender").val());
 	stateVars=[];
 	createTimeline("","",$("#category").val(),$("#gender").val(),1);
@@ -161,7 +164,10 @@ function createMap(category, gender){
 					
 					mapEle[1]=mapEle[0];
 					mapEle[0]=this;
-				}
+				}				
+				$("#loading").css("display","flex");
+				$("#loading").css("background-color","rgb(0,0,0,0.6)");
+				load(150);
 				createTimeline(stateVars[0],stateVars[1],$("#category").val(),$("#gender").val(),0);
 				drawChart(stateVars[0], stateVars[1]);
 			});

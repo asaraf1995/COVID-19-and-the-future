@@ -122,5 +122,12 @@ div.tooltip {
   }
 }
 
+#category, #gender{
+	color:#000;
+}
+
+.h1, .h2, .h3, h1, h2, h3 {
+    margin-top: 5px;
+}
 
 
