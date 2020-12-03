@@ -209,7 +209,7 @@ d3.csv("overall_state.csv", function(csv) {
 		for(var j=1;j<Object.keys(csv[i]).length-4;j++){
 			if(Math.abs(csv[i][Object.keys(csv[i])[j]]) > intresting){
 				facts[csv[i][Object.keys(csv[i])[0]]]=Object.keys(csv[i])[j];
-				intresting=facts[csv[i][Object.keys(csv[i])[j]]]
+				intresting=Math.abs(csv[i][Object.keys(csv[i])[j]])
 			}
 		}
 	}
