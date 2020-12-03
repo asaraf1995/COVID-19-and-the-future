@@ -495,8 +495,8 @@ function drawChart(state1, state2) {
         d.push(['EmpS2'].concat(s2[1].slice(1, 8)));
         d.push(['ProdS1'].concat(s1[2].slice(1, 8)));
         d.push(['ProdS2'].concat(s2[2].slice(1, 8)));
-        d.push(['JobCS1'].concat(s1[1].slice(1, 8)));
-        d.push(['JobCS2'].concat(s1[2].slice(1, 8)));
+        d.push(['JobCS1'].concat(s1[3].slice(1, 8)));
+        d.push(['JobCS2'].concat(s2[3].slice(1, 8)));
         var state_name = d;
         var chart = c3.generate({
             bindto: "#barchart",
