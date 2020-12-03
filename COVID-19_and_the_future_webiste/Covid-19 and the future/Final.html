@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="https://d3js.org/d3-scale-chromatic.v1.js"></script>
 	<script src="https://d3js.org/colorbrewer.v1.min.js"></script>
@@ -32,7 +33,9 @@
     <div id="particles-js"></div>
     <div class="container">
 		<div  class='row' style='place-content:center;background-color:#000;'>
-			<h4>COVID-19 and the Future Survey Data</h3>
+			<div class="col-2"></div>
+			<div class="col-8"><h4>COVID-19 and the Future Survey Data</h3></div>
+			<div class="col-2"><button style='color:#fff' type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal">About</button></div>
 		</div>
 		<div class="row">
 			<div class="col-8" style='border-right:solid'>
@@ -79,7 +82,22 @@
 			</div>
 		</div>
 	</div>
-        
+	<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">About</h4>
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+			  <p>About Text</p>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		  </div>		  
+		</div>
+	</div>
     <script src="index.js" type="text/javascript"></script>
     <script src="particles.js"></script>
     <script src="app.js"></script>
